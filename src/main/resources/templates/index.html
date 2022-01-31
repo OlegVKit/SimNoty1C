@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+</head>
+<body>
+<script type="text/javascript">
+$(function () {
+ var socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        var t = '[[${topic}]]';
+        stompClient.subscribe('/topic/'+t, function (message) {
+            console.log(message);
+            $("#d1c").text(message.body);
+            $("#b1c").click();
+        });
+    });
+});
+</script>
+<div id = "d1c"></div>
+<button id="b1c" style="display: none;" ></button>
+</body>
+</html>
